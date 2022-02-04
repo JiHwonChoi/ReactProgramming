@@ -10,6 +10,7 @@ class App extends Component{
     var flag =1
     this.state={
       mode:'read',
+      selected_content_id:2,
       welcome:{title:'welcome', desc:'hello react'},
       subject:{title:'WEB', sub:'World Wide Web !'},
       contents: [
@@ -26,8 +27,16 @@ class App extends Component{
       _desc=this.state.welcome.desc
     }
     else if (this.state.mode==='read'){
-      _title=this.state.contents[0].title
-      _desc=this.state.contents[0].desc
+      var i = 0
+      while(i<this.state.contents.length){
+        var data = this.state.contents[i]
+        if(data.id === this.state.selected_content_id){
+          _title=data.title
+          _desc=data.desc
+          break
+        }       
+        i+=1
+      }
     }
     
     return (
@@ -47,8 +56,12 @@ class App extends Component{
             해결방법: constructor에 flag를 집어넣어서 class의 인자로써 flag를 설정하였다. 이걸로 껏다 켰다하는 스위치의 역할을 하게 했다. */}
           <TOC 
               data = {this.state.contents}
-              onChangePage = {function(){
-                this.setState({mode:'read'})
+              onChangePage = {function(id){
+                
+                this.setState({
+                  mode:'read',
+                  selected_content_id: Number(id)  
+                })
               }.bind(this)}></TOC>
           {/* TOC의 링크를 클릭하면 url이 바뀌긴 하는데 그렇다로 리로드가 되진 않네? 왜 내가 아는 페이지 넘어가는거랑 다르지 */}
           <Contents title ={_title} desc={_desc}></Contents>
