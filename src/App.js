@@ -3,11 +3,11 @@ import React, {Component} from 'react';
 import Subject from "./components/Subject";
 import TOC from "./components/TOC";
 import Contents from './components/Contents';
+import Control from './components/Control';
 
 class App extends Component{
   constructor(props){
     super(props);
-    var flag =1
     this.state={
       mode:'read',
       selected_content_id:2,
@@ -63,6 +63,11 @@ class App extends Component{
                   selected_content_id: Number(id)  
                 })
               }.bind(this)}></TOC>
+          <Control onChangeMode={function(_mode){
+            this.setState({
+              mode:_mode
+            })
+          }.bind(this)}></Control>
           {/* TOC의 링크를 클릭하면 url이 바뀌긴 하는데 그렇다로 리로드가 되진 않네? 왜 내가 아는 페이지 넘어가는거랑 다르지 */}
           <Contents title ={_title} desc={_desc}></Contents>
 
