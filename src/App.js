@@ -2,14 +2,15 @@
 import React, {Component} from 'react';
 import Subject from "./components/Subject";
 import TOC from "./components/TOC";
-import Contents from './components/Contents';
+import ReadContents from './components/ReadContents';
+import CreateContents from './components/CreateContents';
 import Control from './components/Control';
 
 class App extends Component{
   constructor(props){
     super(props);
     this.state={
-      mode:'read',
+      mode:'create',
       selected_content_id:2,
       welcome:{title:'welcome', desc:'hello react'},
       subject:{title:'WEB', sub:'World Wide Web !'},
@@ -21,13 +22,20 @@ class App extends Component{
     }
   }
   render(){
-    var _title, _desc = null
+    var _title, _desc, _article= null
+
+    // 기본상태일때
     if(this.state.mode==='welcome'){
       _title=this.state.welcome.title
       _desc=this.state.welcome.desc
+      _article=<ReadContents title ={_title} desc={_desc}></ReadContents>
     }
+
+    // Read 상태일때
     else if (this.state.mode==='read'){
       var i = 0
+
+      //setState로 state변경된 후에 화면에 띄워줄 정보 선택하기
       while(i<this.state.contents.length){
         var data = this.state.contents[i]
         if(data.id === this.state.selected_content_id){
@@ -37,6 +45,12 @@ class App extends Component{
         }       
         i+=1
       }
+      _article=<ReadContents title ={_title} desc={_desc}></ReadContents>
+    }
+
+    // Create 상태일때
+    else if (this.state.mode==='create'){
+      _article=<CreateContents></CreateContents>
     }
     
     return (
@@ -51,9 +65,6 @@ class App extends Component{
           }.bind(this)}>
           </Subject>
 
-            {/* flag 를 이용해서 왔다갔다 하고 싶다. 근데 setState 될 때 마다 render()함수가 다시 돌아가면서
-            flag 를 초기화 시켜서 flag값이 항상 일정하게 나온다. render의 영향없는 flag값을 어디서 설정하지?
-            해결방법: constructor에 flag를 집어넣어서 class의 인자로써 flag를 설정하였다. 이걸로 껏다 켰다하는 스위치의 역할을 하게 했다. */}
           <TOC 
               data = {this.state.contents}
               onChangePage = {function(id){
@@ -68,8 +79,11 @@ class App extends Component{
               mode:_mode
             })
           }.bind(this)}></Control>
-          {/* TOC의 링크를 클릭하면 url이 바뀌긴 하는데 그렇다로 리로드가 되진 않네? 왜 내가 아는 페이지 넘어가는거랑 다르지 */}
-          <Contents title ={_title} desc={_desc}></Contents>
+          {/* TOC의 링크를 클릭하면 url이 바뀌긴 하는데 그렇다로 리로드가 되진 않는다. 
+          e.PreventDfault 때문인데, 주소는 바뀌지만 페이지가 리로드 되지 않음 */}
+          
+          {_article}
+          {/* CRUD 상태에 따라서 다른 article 이 오도록 한다 */}
 
       </div>
     );

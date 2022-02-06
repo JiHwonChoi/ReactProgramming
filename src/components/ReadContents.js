@@ -1,7 +1,7 @@
 import { isContentEditable } from '@testing-library/user-event/dist/utils'
 import React, {Component} from 'react'
 
-class Contents extends Component {
+class ReadContents extends Component {
     render(){
         return (
             <article>
@@ -14,4 +14,4 @@ class Contents extends Component {
     }
 }
 
-export default Contents
+export default ReadContents
