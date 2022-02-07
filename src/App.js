@@ -50,7 +50,9 @@ class App extends Component{
 
     // Create 상태일때
     else if (this.state.mode==='create'){
-      _article=<CreateContents></CreateContents>
+      _article=<CreateContents onSubmit={function(_title, _desc){
+        console.log(_title, _desc)
+      }.bind(this)}></CreateContents>
     }
     
     return (

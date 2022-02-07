@@ -11,7 +11,7 @@ class CreateContents extends Component {
                 <form action='/create_process' method='post' 
                 onSubmit={function(e){
                     e.preventDefault()
-                    alert('hello')
+                    e.props.onSubmit(e.target.title.value, e.target.desc.value)
                 }.bind(this)}>
                     <p><input type="text" placeholder="title"></input></p>
                     <p><textarea name="desc" placeholder='description'></textarea></p>
