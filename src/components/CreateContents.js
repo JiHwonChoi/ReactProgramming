@@ -11,9 +11,10 @@ class CreateContents extends Component {
                 <form action='/create_process' method='post' 
                 onSubmit={function(e){
                     e.preventDefault()
-                    e.props.onSubmit(e.target.title.value, e.target.desc.value)
+                    this.props.onSubmit(e.target.title.value, e.target.desc.value)
+                    // e.target.필요한 태그의 name을 입력해 값을 받는다
                 }.bind(this)}>
-                    <p><input type="text" placeholder="title"></input></p>
+                    <p><input type="text" name="title" placeholder="title"></input></p>
                     <p><textarea name="desc" placeholder='description'></textarea></p>
                     <p><input type="submit" value="submit"></input></p>
                 </form>

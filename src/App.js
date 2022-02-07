@@ -9,6 +9,7 @@ import Control from './components/Control';
 class App extends Component{
   constructor(props){
     super(props);
+    this.max_content_id =3;
     this.state={
       mode:'create',
       selected_content_id:2,
@@ -51,7 +52,15 @@ class App extends Component{
     // Create 상태일때
     else if (this.state.mode==='create'){
       _article=<CreateContents onSubmit={function(_title, _desc){
-        console.log(_title, _desc)
+        console.log(_title)
+        console.log(_desc)
+        this.max_content_id+=1
+        var _content = this.state.contents.concat(
+          {id:this.max_content_id, title:_title, desc:_desc}
+        )
+        this.setState(
+          this.state.contents=_content
+        )
       }.bind(this)}></CreateContents>
     }
     
