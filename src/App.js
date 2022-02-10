@@ -22,6 +22,63 @@ class App extends Component{
       ]
     }
   }
+getReadContent(){
+  var i =0
+  while(i<this.state.contents.length){
+    var data = this.state.contents[i]
+    if(data.id === this.state.selected_content_id){
+      // _title=data.title
+      // _desc=data.desc
+      return data
+      
+    }       
+    i+=1
+  }
+  
+}
+getContent(){
+  if(this.state.mode==='welcome'){
+    _title=this.state.welcome.title
+    _desc=this.state.welcome.desc
+    _article=<ReadContents title ={_title} desc={_desc}></ReadContents>
+  }
+
+  // Read 상태일때
+  else if (this.state.mode==='read'){
+    // var i = 0
+
+    //setState로 state변경된 후에 화면에 띄워줄 정보 선택하기
+    // while(i<this.state.contents.length){
+    //   var data = this.state.contents[i]
+    //   if(data.id === this.state.selected_content_id){
+    //     _title=data.title
+    //     _desc=data.desc
+    //     break
+    //   }       
+    //   i+=1
+    // }
+    var _data = this.getReadContent()
+    _article=<ReadContents title ={_data.title} desc={_data.desc}></ReadContents>
+  }
+
+  // Create 상태일때
+  else if (this.state.mode==='create'){
+    _article=<CreateContents onSubmit={function(_title, _desc){
+      console.log(_title)
+      console.log(_desc)
+      this.max_content_id+=1
+      var _content = this.state.contents.concat(
+        {id:this.max_content_id, title:_title, desc:_desc}
+      )
+      this.setState(
+        this.state.contents=_content
+      )
+    }.bind(this)}></CreateContents>
+  }
+
+  return _article
+}
+
   render(){
     var _title, _desc, _article= null
 
@@ -93,7 +150,7 @@ class App extends Component{
           {/* TOC의 링크를 클릭하면 url이 바뀌긴 하는데 그렇다로 리로드가 되진 않는다. 
           e.PreventDfault 때문인데, 주소는 바뀌지만 페이지가 리로드 되지 않음 */}
           
-          {_article}
+          {this.getContent()}
           {/* CRUD 상태에 따라서 다른 article 이 오도록 한다 */}
 
       </div>
