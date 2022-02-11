@@ -117,9 +117,35 @@ getContent(){
                 })
               }.bind(this)}></TOC>
           <Control onChangeMode={function(_mode){
-            this.setState({
-              mode:_mode
-            })
+            if(_mode==='delete'){
+              if(window.confirm('정말로 지울건가요?')){
+                var _contents = Array.from(this.state.contents)
+                var i =0
+                while(i<_contents.length){
+                  console.log(i,this.state.selected_content_id)
+                  if(_contents[i].id===this.state.selected_content_id){
+                    console.log('yes')
+                    _contents.splice(i,1)
+                    this.max_content_id-=1
+                    break
+                  }
+                  i+=1
+                }
+  
+                this.setState({
+                  contents:_contents,
+                  mode:'welcome'
+                })
+  
+              }
+            }
+            
+            else{
+              this.setState({
+                mode:_mode
+              })
+            }
+            
           }.bind(this)}></Control>
           {/* TOC의 링크를 클릭하면 url이 바뀌긴 하는데 그렇다로 리로드가 되진 않는다. 
           e.PreventDfault 때문인데, 주소는 바뀌지만 페이지가 리로드 되지 않음 */}

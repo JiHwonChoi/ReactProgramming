@@ -23,7 +23,10 @@ class Control extends Component{
                             }.bind(this)}
                             >update</a></li>
 
-                    <li><input type="button" value="delete"></input></li>
+                    <li><input type="button" value="delete"
+                               onClick={function(e){
+                                   this.props.onChangeMode('delete')
+                               }.bind(this)}></input></li>
     
                 </ul>
             </div>
