@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import Subject from "./components/Subject";
 import TOC from "./components/TOC";
 import ReadContents from './components/ReadContents';
+import UpdateContents from './components/UpdateContents';
 import CreateContents from './components/CreateContents';
 import Control from './components/Control';
 
@@ -27,8 +28,6 @@ getReadContent(){
   while(i<this.state.contents.length){
     var data = this.state.contents[i]
     if(data.id === this.state.selected_content_id){
-      // _title=data.title
-      // _desc=data.desc
       return data
       
     }       
@@ -38,88 +37,63 @@ getReadContent(){
 }
 getContent(){
   if(this.state.mode==='welcome'){
-    _title=this.state.welcome.title
-    _desc=this.state.welcome.desc
-    _article=<ReadContents title ={_title} desc={_desc}></ReadContents>
+    var _title=this.state.welcome.title
+    var _desc=this.state.welcome.desc
+    var _article=<ReadContents title ={_title} desc={_desc}></ReadContents>
   }
 
   // Read 상태일때
   else if (this.state.mode==='read'){
-    // var i = 0
 
-    //setState로 state변경된 후에 화면에 띄워줄 정보 선택하기
-    // while(i<this.state.contents.length){
-    //   var data = this.state.contents[i]
-    //   if(data.id === this.state.selected_content_id){
-    //     _title=data.title
-    //     _desc=data.desc
-    //     break
-    //   }       
-    //   i+=1
-    // }
     var _data = this.getReadContent()
-    _article=<ReadContents title ={_data.title} desc={_data.desc}></ReadContents>
+    var _article=<ReadContents title ={_data.title} desc={_data.desc}></ReadContents>
   }
 
   // Create 상태일때
   else if (this.state.mode==='create'){
-    _article=<CreateContents onSubmit={function(_title, _desc){
+    var _article=<CreateContents onSubmit={function(_title, _desc){
       console.log(_title)
       console.log(_desc)
       this.max_content_id+=1
       var _content = this.state.contents.concat(
         {id:this.max_content_id, title:_title, desc:_desc}
       )
-      this.setState(
-        this.state.contents=_content
+      this.setState({
+        contents:_content,
+        selected_content_id:this.max_content_id,
+        mode:'read'
+        
+      }
       )
     }.bind(this)}></CreateContents>
+  }
+
+  // Update
+  else if (this.state.mode==='update'){
+    var _data = this.getReadContent()
+    var _article = <UpdateContents data={_data} onSubmit={function(_id,_title, _desc){
+      var i =0
+      var _contents = Array.from(this.state.contents)
+      while (i<this.state.contents.length){
+        if(_id===this.state.contents[i].id){
+          _contents[i]={id:_id, title:_title, desc:_desc}
+          break
+        }
+        i+=1
+      }
+      this.setState({
+        contents:_contents,
+        mode:'read'
+      }
+      )
+    }.bind(this)}></UpdateContents>
   }
 
   return _article
 }
 
   render(){
-    var _title, _desc, _article= null
-
-    // 기본상태일때
-    if(this.state.mode==='welcome'){
-      _title=this.state.welcome.title
-      _desc=this.state.welcome.desc
-      _article=<ReadContents title ={_title} desc={_desc}></ReadContents>
-    }
-
-    // Read 상태일때
-    else if (this.state.mode==='read'){
-      var i = 0
-
-      //setState로 state변경된 후에 화면에 띄워줄 정보 선택하기
-      while(i<this.state.contents.length){
-        var data = this.state.contents[i]
-        if(data.id === this.state.selected_content_id){
-          _title=data.title
-          _desc=data.desc
-          break
-        }       
-        i+=1
-      }
-      _article=<ReadContents title ={_title} desc={_desc}></ReadContents>
-    }
-
-    // Create 상태일때
-    else if (this.state.mode==='create'){
-      _article=<CreateContents onSubmit={function(_title, _desc){
-        console.log(_title)
-        console.log(_desc)
-        this.max_content_id+=1
-        var _content = this.state.contents.concat(
-          {id:this.max_content_id, title:_title, desc:_desc}
-        )
-        this.setState(
-          this.state.contents=_content
-        )
-      }.bind(this)}></CreateContents>
-    }
+   
     
     return (
       <div className="App">
